@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BowlingAPI.Models
@@ -13,6 +14,8 @@ namespace BowlingAPI.Models
         public string SpareType { get; set; }
         public bool WasConverted { get; set; }
         public int FrameId { get; set; }
+
+        [JsonIgnore]
         public Frame Frame { get; set; }
     }
 }
