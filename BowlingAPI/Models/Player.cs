@@ -11,5 +11,6 @@ namespace BowlingAPI.Models
         public string Name { get; set; }
         public int GamesPlayed { get; set; }
         public int CurrentAverage { get; set; }
+        public ICollection<Game> Games { get; set; }
     }
 }

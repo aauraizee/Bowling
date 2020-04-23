@@ -11,5 +11,6 @@ namespace BowlingAPI.Models
         public int TotalScore { get; set; }
         public int PlayerId { get; set; }
         public Player Player { get; set; }
+        public ICollection<Frame> Frames { get; set; }
     }
 }

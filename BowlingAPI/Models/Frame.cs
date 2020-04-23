@@ -21,5 +21,6 @@ namespace BowlingAPI.Models
 
         public int GameId { get; set; }
         public Game Game { get; set; }
+        public ICollection<Shot> Shots { get; set; }
     }
 }
