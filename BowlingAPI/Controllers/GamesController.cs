@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BowlingAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BowlingAPI.Controllers
 {
@@ -23,16 +24,20 @@ namespace BowlingAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllGames()
+        public async Task<IActionResult> GetAllGames()
         {
-            return Ok(_context.Games.ToArray());
+            return Ok(await _context.Games.ToArrayAsync());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetGame(int id)
+        public async Task<IActionResult> GetGame(int id)
         {
-            var product = _context.Games.Find(id);
-            return Ok(product);
+            var game = await _context.Games.FindAsync(id);
+            if (game == null)
+            {
+                return NotFound();
+            }
+            return Ok(game);
         }
     }
 }
