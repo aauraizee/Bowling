@@ -23,9 +23,16 @@ namespace BowlingAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Game> GetAllGames()
+        public IActionResult GetAllGames()
         {
-            return _context.Games.ToArray();
+            return Ok(_context.Games.ToArray());
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetGame(int id)
+        {
+            var product = _context.Games.Find(id);
+            return Ok(product);
         }
     }
 }
