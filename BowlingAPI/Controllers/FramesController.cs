@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BowlingAPI.Classes;
 using BowlingAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +25,27 @@ namespace BowlingAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllFrames()
+        public async Task<IActionResult> GetAllFrames([FromQuery] FrameQueryParameters queryParameters)
         {
-            return Ok(await _context.Frames.ToArrayAsync());
+            IQueryable<Frame> frames = _context.Frames;
+
+            if (queryParameters.Game != 0)
+            {
+                frames = frames.Where(
+                    f => f.GameId == queryParameters.Game);
+            }
+            if (queryParameters.Value != 0)
+            {
+                frames = frames.Where(
+                    f => f.Value == queryParameters.Value);
+            }
+            if (queryParameters.Type != -1)
+            {
+                frames = frames.Where(
+                    f => f.TypeFlag == queryParameters.Type);
+            }
+
+            return Ok(await frames.ToArrayAsync());
         }
 
         [HttpGet("{id}")]

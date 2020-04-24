@@ -11,14 +11,14 @@ namespace BowlingAPI.Models
         //X=Strike, S=Spare, O=Open, T=Tenth
         public enum FrameType
         {
-            X,
-            S,
-            O,
-            T
+            X = 0,
+            S = 1,
+            O = 2,
+            T = 3
         }
         public int FrameId { get; set; }
         public int Value { get; set; }
-        public FrameType TypeFlag { get; set; }
+        public int TypeFlag { get; set; }
 
         public int GameId { get; set; }
 
