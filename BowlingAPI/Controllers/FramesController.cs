@@ -77,14 +77,12 @@ namespace BowlingAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFrame([FromRoute] int id, [FromBody] Frame frame)
         {
-            var entity = _context.Frames.FirstOrDefault(f => f.FrameId == id);
-
-            if (entity != null)
+            if (id != frame.FrameId)
             {
-                entity.GameId = frame.GameId;
-                entity.Value = frame.Value;
-                entity.TypeFlag = frame.TypeFlag;
+                return BadRequest();
             }
+
+            _context.Entry(frame).State = EntityState.Modified;
 
             try
             {

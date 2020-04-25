@@ -87,16 +87,12 @@ namespace BowlingAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutShot([FromRoute] int id, [FromBody] Shot shot)
         {
-            var entity = _context.Shots.FirstOrDefault(s => s.ShotId == id);
-
-            if (entity != null)
+            if (id != shot.ShotId)
             {
-                entity.FrameId = shot.FrameId;
-                entity.PinsHit = shot.PinsHit;
-                entity.IsSpareShot = shot.IsSpareShot;
-                entity.SpareType = shot.SpareType;
-                entity.WasConverted = shot.WasConverted;
+                return BadRequest();
             }
+
+            _context.Entry(shot).State = EntityState.Modified;
 
             try
             {
