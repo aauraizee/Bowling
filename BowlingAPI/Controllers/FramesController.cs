@@ -58,5 +58,19 @@ namespace BowlingAPI.Controllers
             }
             return Ok(frame);
         }
+
+
+        [HttpPost]
+        public async Task<ActionResult<Frame>> PostFrame([FromBody] Frame frame)
+        {
+            _context.Frames.Add(frame);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+                    "GetFrame",
+                    new { id = frame.FrameId },
+                    frame
+                );
+        }
     }
 }
