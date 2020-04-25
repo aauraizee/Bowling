@@ -69,5 +69,19 @@ namespace BowlingAPI.Controllers
             }
             return Ok(shot);
         }
+
+
+        [HttpPost]
+        public async Task<ActionResult<Shot>> PostShot([FromBody] Shot shot)
+        {
+            _context.Shots.Add(shot);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+                    "GetShot",
+                    new { id = shot.ShotId },
+                    shot
+                );
+        }
     }
 }
