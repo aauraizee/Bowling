@@ -72,5 +72,35 @@ namespace BowlingAPI.Controllers
                     frame
                 );
         }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutFrame([FromRoute] int id, [FromBody] Frame frame)
+        {
+            var entity = _context.Frames.FirstOrDefault(f => f.FrameId == id);
+
+            if (entity != null)
+            {
+                entity.GameId = frame.GameId;
+                entity.Value = frame.Value;
+                entity.TypeFlag = frame.TypeFlag;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            } 
+            catch (DbUpdateConcurrencyException)
+            {
+                if (_context.Frames.Find(id) == null)
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+
+            return NoContent();
+        }
     }
 }
