@@ -9,18 +9,8 @@ namespace BowlingAPI.Classes
     {
         private int _type = -1;
 
-        public int Game { get; set; }
-        public int Value { get; set; }
-        public int Type
-        {
-            get
-            {
-                return _type;
-            }
-            set
-            {
-                _type = value;
-            }
-        }
+        public int? Game { get; set; }
+        public int? Value { get; set; }
+        public int? Type { get; set; }
     }
 }

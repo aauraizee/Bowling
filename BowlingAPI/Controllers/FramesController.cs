@@ -29,17 +29,17 @@ namespace BowlingAPI.Controllers
         {
             IQueryable<Frame> frames = _context.Frames;
 
-            if (queryParameters.Game != 0)
+            if (queryParameters.Game != null)
             {
                 frames = frames.Where(
                     f => f.GameId == queryParameters.Game);
             }
-            if (queryParameters.Value != 0)
+            if (queryParameters.Value != null)
             {
                 frames = frames.Where(
                     f => f.Value == queryParameters.Value);
             }
-            if (queryParameters.Type != -1)
+            if (queryParameters.Type != null)
             {
                 frames = frames.Where(
                     f => f.TypeFlag == queryParameters.Type);
