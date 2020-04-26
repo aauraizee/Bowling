@@ -100,5 +100,21 @@ namespace BowlingAPI.Controllers
 
             return NoContent();
         }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Frame>> DeleteFrame([FromRoute] int id)
+        {
+            var frame = await _context.Frames.FindAsync(id);
+            if (frame == null)
+            {
+                return NotFound();
+            }
+
+            _context.Frames.Remove(frame);
+            await _context.SaveChangesAsync();
+
+            return frame;
+        }
     }
 }
