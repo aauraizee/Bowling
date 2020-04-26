@@ -39,5 +39,62 @@ namespace BowlingAPI.Controllers
             }
             return Ok(game);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Game>> PostGame([FromBody] Game game)
+        {
+            _context.Games.Add(game);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+                    "GetGame",
+                    new { id = game.GameId },
+                    game
+                );
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutGame([FromRoute] int id, [FromBody] Game game)
+        {
+            if (id != game.GameId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(game).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (_context.Games.Find(id) == null)
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+
+            return NoContent();
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Game>> DeleteGame([FromRoute] int id)
+        {
+            var game = await _context.Games.FindAsync(id);
+            if (game == null)
+            {
+                return NotFound();
+            }
+
+            _context.Games.Remove(game);
+            await _context.SaveChangesAsync();
+
+            return game;
+        }
     }
 }
