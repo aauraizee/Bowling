@@ -65,7 +65,7 @@ namespace BowlingAPI.Controllers
 
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(PlayerLoginDto playerLoginDto)
+        public async Task<IActionResult> Login([FromBody] PlayerLoginDto playerLoginDto)
         {
             playerLoginDto.Username = playerLoginDto.Username.ToLower();
             var player = await _context.Players.FirstOrDefaultAsync(p => p.Username == playerLoginDto.Username);
@@ -96,7 +96,7 @@ namespace BowlingAPI.Controllers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(30),
+                Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = creds
             };
 
