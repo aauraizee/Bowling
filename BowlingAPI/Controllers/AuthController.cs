@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using BowlingAPI.DTOs;
 using BowlingAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,16 +32,16 @@ namespace BowlingAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string username, string password)
+        public async Task<IActionResult> Register([FromBody] PlayerRegisterDto playerRegisterDto)
         {
-            username = username.ToLower();
+            playerRegisterDto.Username = playerRegisterDto.Username.ToLower();
 
-            if (await _context.Players.AnyAsync(p => p.Username == username))
+            if (await _context.Players.AnyAsync(p => p.Username == playerRegisterDto.Username))
                 return BadRequest("This username already exists!");
 
             var playerToRegister = new Player
             {
-                Username = username,
+                Username = playerRegisterDto.Username,
                 GamesPlayed = 0,
                 CurrentAverage = 0
             };
@@ -49,7 +50,7 @@ namespace BowlingAPI.Controllers
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {
                 passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(playerRegisterDto.Password));
             }
 
             playerToRegister.PasswordHash = passwordHash;
@@ -64,17 +65,17 @@ namespace BowlingAPI.Controllers
 
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(PlayerLoginDto playerLoginDto)
         {
-            username = username.ToLower();
-            var player = await _context.Players.FirstOrDefaultAsync(p => p.Username == username);
+            playerLoginDto.Username = playerLoginDto.Username.ToLower();
+            var player = await _context.Players.FirstOrDefaultAsync(p => p.Username == playerLoginDto.Username);
 
             if (player == null)
                 return Unauthorized();
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512(player.PasswordSalt))
             {
-                var comparisonHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                var comparisonHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(playerLoginDto.Password));
                 for (int i = 0; i < comparisonHash.Length; i++)
                 {
                     if (comparisonHash[i] != player.PasswordHash[i])
