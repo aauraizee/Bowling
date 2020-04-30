@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using BowlingAPI.Classes;
 using BowlingAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BowlingAPI.Controllers
 {
+    //[Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ShotsController : ControllerBase
