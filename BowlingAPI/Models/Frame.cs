@@ -19,6 +19,7 @@ namespace BowlingAPI.Models
         public int FrameId { get; set; }
         public int Value { get; set; }
         public int TypeFlag { get; set; }
+        public int scoreAtFrame { get; set; }
 
         public int GameId { get; set; }
 
